@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script type="text/javascript" src="js/takephoto/takephoto.js"></script>
+		<script type="text/javascript" src="js/takephoto/upload.js"></script>
+		<script type="text/javascript" src="js/takephoto/gameObj.js"></script>
+		<script type="text/javascript" src="js/takephoto/gameObj_2.js"></script>
+		<script type="text/javascript" src="js/takephoto/cnGame.js"></script>
+		<script type="text/javascript" src="js/takephoto/canny.js"></script>
+		<script type="text/javascript" src="js/takephoto/jsfeat-min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.js"></script>
+		<script type="text/javascript" src="js/libs/three49.js"></script>
+		
+		<script type="text/javascript" src="js/webgl/tank.js"></script>
+		<script type="text/javascript" src="js/webgl/to3d.js"></script>
+		<script type="text/javascript" src="js/webgl/to3d_2.js"></script>
+		
+		<script type="text/javascript" src="js/tools/Stats.js"></script>
+		<script type="text/javascript" src="js/tools/THREEx.FullScreen.js"></script>
+		<script type="text/javascript" src="js/tools/THREEx.WindowResize.js"></script>
+
+		<script type="text/javascript" src="js/tools/button.js"></script>
+
+		
+		<script type="text/javascript" src="js/gameView/gameView.js"></script>
+		<script type="text/javascript" src="js/gameView/faceControl/faceTriggerSecond.js"></script>
+		<script type="text/javascript" src="js/gameView/faceControl/faceTriggerThird.js"></script>
+		
+		<script type="text/javascript" src="js/gameView/headtrackr/main.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/ccv.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/cascade.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/whitebalance.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/facetrackr.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/headposition.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/ui.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/smoother.js"></script>
+		<script type="text/javascript" src="js/gameView/headtrackr/camshift.js"></script>
+		<style>
+			body {
+				background:url('images/gameView/bg.png');
+				overflow:hidden;
+			}		
+			#function{
+				text-align:center;
+			}
+			#takeAphoto{
+				text-align:center;
+			}
+			#control {
+				width: 320;
+				height: 240;
+				position: absolute;
+				left: 50%;
+				margin-left: -160px;
+				top:50%;
+				margin-top: -180px;	
+				-webkit-transform: scale(-1, 1);
+			} 
+		</style>
+			<style type="text/css">
+			#experiment {
+			  -webkit-perspective: 800; 
+			  -webkit-perspective-origin: 50% 200px;
+			
+			  -moz-perspective: 800; 
+			  -moz-perspective-origin: 50% 200px;
+			}
+
+			#cube {
+			  position: relative;
+			  margin: 133px auto 0;
+			  height: 400px;
+			  width: 735px;
+			  -webkit-transition: -webkit-transform 2s linear;
+			  -webkit-transform-style: preserve-3d;
+			
+			  -moz-transition: -moz-transform 2s linear;
+			  -moz-transform-style: preserve-3d;
+			}
+
+			.face {
+			  position: absolute;
+			  height: 480px;
+			  width: 640px;
+			  background-color: rgba(50, 50, 50, 0.7);
+			  font-size: 27px;
+			  line-height: 1em;
+			  color: #fff;
+			  border: 1px solid #555;
+			  border-radius: 3px;
+			}
+			
+			.ground{
+				position: absolute;
+				height: 750px;
+				width: 750px;		
+				background-color: rgba(50, 50, 50, 0.7);
+				font-size: 27px;
+				line-height: 1em;
+				color: #fff;		
+			}
+			
+			.buttonFace{
+				position: absolute;
+				height: 80px;
+				width: 80px;		
+				background-color: rgba(50, 50, 50, 0);
+				font-size: 27px;
+				line-height: 1em;
+				color: #fff;		
+			}
+			
+			.emotionPanel{
+				position: absolute;
+				height: 90px;
+				width: 130px;
+				padding:10px;
+				background:url('images/gameView/glassPanel.png');
+				font-size: 27px;
+				line-height: 1em;
+				color: #fff;		
+			}
+
+			#cube .camera {
+			  -webkit-transform: translateZ(-75px) translateY(-140px) translateX(60px);
+			  -moz-transform: translateZ(-75px) translateY(-140px) translateX(60px);
+			}
+			#cube .glassPanel {
+			  -webkit-transform: translateZ(-70px) translateY(-140px) translateX(60px);
+			  -moz-transform: translateZ(-70px) translateY(-140px) translateX(60px);
+			}
+			
+			#cube .rightBottom {
+			  -webkit-transform: translateZ(100px) translateX(600px) translateY(290px);
+			  -moz-transform: translateZ(100px) translateX(600px) translateY(290px);
+			}
+			
+			#cube .leftBottom {
+			  -webkit-transform: translateZ(200px) translateX(100px) translateY(280px);
+			  -moz-transform: translateZ(200px) translateX(100px) translateY(280px);
+			}
+			
+			#cube .dotGround{
+				-webkit-transform: rotateX(90deg) translateZ(-20px);
+				-moz-transform: rotateY(90deg) translateZ(-20px);
+			}
+			
+			
+			#cube .three {
+			  -webkit-transform: rotateY(180deg) translateZ(375px);
+			  -moz-transform: rotateY(180deg) translateZ(375px);
+			}
+
+			#cube .four {
+				-webkit-transform: rotateY(-90deg) translateZ(370px);
+				-moz-transform: rotateY(-90deg) translateZ(370px);
+			}			
+		</style>
+	</head>
+	
+	<body>
+		<div id="scen3">
+
+			<div id="function">
+				<input type='text' name='mpicPath' id='textfield' class='txt' />  
+				<input type="file" name="image" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />
+				<button id="locate" onClick="upload()">submit</button>
+			</div>
+			<br>
+			<div id="takeAphoto">
+				<button id="face">YOUR FACE</button>
+			</div>
+		</div>
+		
+		<img id="imageSource" width="200px" height="240px">
+		
+		<div id="scen1">	
+			<div id="b1" style="position:absolute;margin:0">
+				<button id="snap">Snap Photo</button>				
+			</div>
+			<video id="video" style="position:absolute;left:300px;top:20px;width:640;height:480" autoplay></video>
+		</div>			
+		<div id="scen2">
+			<div id="b2" style="position:absolute;margin:0;left:0px;top:0px">
+				<button id="mymaze" onClick="tomaze()">Convert</button>
+			</div>
+			<canvas id="output" width="125" height="80" style="position:absolute;left:150px;top:0px;width:1000px;height:640px"></canvas>
+		</div>
+		<!-- -->
+		<div id="experiment">
+				<div id="cube" >
+						<div class="ground dotGround">
+							<img src="images/gameView/ground.png">
+						</div>
+						<div class="face camera">
+
+									<div id="scen4">	
+										<!--<button id="snap_2">Snap Photo 2</button>			-->	
+										<video id="video_2" style="position:absolute;left:0px;top:0px;width:640;height:480" autoplay></video>
+									</div>			
+									<div id="scen5">
+										<!--<button id="mymaze_2" onClick="tomaze_2()">Convert 2</button>-->
+										<canvas id="output_2" width="125" height="80" style="position:absolute;left:70px;top:80px;width:500px;height:320px;"></canvas>
+									</div>
+						</div>	
+						
+						<!-- the glass effect above the camera -->
+						<div class="face glassPanel">
+							<img src="images/gameView/glasss.png" style="margin-top:-10px; margin-left:-15px;" />
+						</div>
+						
+							<!-- the buttons -->
+						<div class="buttonFace rightBottom">
+							<img name="go" id="snap_2" src="images/gameView/go.png" onmouseover="mouseOverGo();" onmouseout="mouseOutGo();" />
+							<img name="convert" id="mymaze_2" src="images/gameView/convert.png" style="display:none;" onmouseover="mouseOverConvert();" onmouseout="mouseOutConvert();" onClick="tomaze_2()" />
+							<button id="3d" onClick="to3D_2()">重力</button>
+							<button id="3d_02" onClick="to3D()">肤色</button>
+						</div>
+				</div>
+		</div>
+		<!-- -->
+		<div id="fff">
+			<button id="3d" onClick="to3D_2()">重力</button>
+			<button id="3d_02" onClick="to3D()">肤色</button>
+		</div>
+		
+		
+		<div id="scen7">
+			<canvas id="compare" width="320" height="240" style="display:none"></canvas>
+			<canvas id="control" width="320" height="240" style="opacity:0.5"></canvas><!-- style="opacity:0.5" -->
+		</div>
+		
+		<img id="bbg1" src="images/gameView/buttonBG.png" style="display:none; height:100%;position:absolute; top:0px; left:0px;">
+		<img id="eye" name= "eye" src="images/gameView/eye.png" style="display:none; position:absolute; top:35%; left:0px;" onmouseover="mouseOverEye();" onmouseout="mouseOutEye();" onclick="changeView();" />
+		<img id="bbg2" src="images/gameView/buttonBG2.png" style="display:none; height:100%;position:absolute; top:0px; right:0px;">
+		<img id="aim" name="aim" src="images/gameView/aim.png" style="display:none; position:absolute; top:35%; right:0px;" onmouseover="mouseOverAim();" onmouseout="mouseOutAim();" onclick="shoot();" />
+		<button id="reload" style="position:absolute; left:5px; top:5px;display:none;" onclick="window.location.href='index.html'">reload</button>
+	</body>	
+	
+</html>
