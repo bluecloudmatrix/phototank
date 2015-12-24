@@ -1,1 +1,1 @@
-[pic](https://raw.githubusercontent.com/bluecloudmatrix/phototank/master/pic.jpg)
+![pic](https://raw.githubusercontent.com/bluecloudmatrix/phototank/master/pic.jpg)
